@@ -86,6 +86,12 @@
     cur = i;
     var card = list[i];
     var img = card.querySelector('img');
+    // 先用已缓存的缩略图铺底，避免大图下载期间黑屏
+    var thumb = img.currentSrc || img.src;
+    lb.style.backgroundImage = 'url("' + thumb + '")';
+    lb.style.backgroundSize = 'contain';
+    lb.style.backgroundPosition = 'center';
+    lb.style.backgroundRepeat = 'no-repeat';
     lbImg.src = card.getAttribute('data-full') || img.src;
     lbImg.alt = img.alt || '';
     lbCap.textContent = (card.getAttribute('data-cap') || '') + '　·　点空白处或按返回键关闭';
@@ -107,6 +113,7 @@
     lb.classList.remove('on');
     document.body.style.overflow = '';
     lbImg.removeAttribute('src');
+    lb.style.backgroundImage = '';
     lb.setAttribute('aria-hidden', 'true');
     if (lbPushed && !fromPop) {
       lbPushed = false;
