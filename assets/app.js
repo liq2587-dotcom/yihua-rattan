@@ -73,6 +73,7 @@
   var lbImg = document.getElementById('lbImg');
   var lbCap = document.getElementById('lbCap');
   var cur = -1, list = [];
+  var lbPushed = false;   // 是否已压入历史记录
 
   function visible() {
     return cards.filter(function (c) { return c.style.display !== 'none'; });
@@ -87,28 +88,52 @@
     var img = card.querySelector('img');
     lbImg.src = card.getAttribute('data-full') || img.src;
     lbImg.alt = img.alt || '';
-    lbCap.textContent = card.getAttribute('data-cap') || '';
+    lbCap.textContent = (card.getAttribute('data-cap') || '') + '　·　点空白处或按返回键关闭';
     lb.classList.add('on');
     document.body.style.overflow = 'hidden';
+    lb.setAttribute('aria-hidden', 'false');
   }
-  function close() {
+
+  // 打开大图时压一条历史记录：手机/浏览器的「返回」变成关闭大图，而不是离开网站
+  function pushLbState() {
+    if (lbPushed) return;
+    try {
+      history.pushState({ lb: 1 }, '', location.href);
+      lbPushed = true;
+    } catch (e) { lbPushed = false; }
+  }
+
+  function close(fromPop) {
     lb.classList.remove('on');
     document.body.style.overflow = '';
     lbImg.removeAttribute('src');
+    lb.setAttribute('aria-hidden', 'true');
+    if (lbPushed && !fromPop) {
+      lbPushed = false;
+      history.back();   // 主动关闭时把那条历史记录退掉，保持返回键行为正常
+      return;
+    }
+    lbPushed = false;
   }
+
+  window.addEventListener('popstate', function () {
+    if (lbPushed) close(true);
+  });
+
   cards.forEach(function (card) {
     card.addEventListener('click', function (e) {
       e.preventDefault();
       show(visible().indexOf(card));
+      pushLbState();
     });
   });
-  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbClose').addEventListener('click', function () { close(false); });
   document.getElementById('lbPrev').addEventListener('click', function (e) { e.stopPropagation(); show(cur - 1); });
   document.getElementById('lbNext').addEventListener('click', function (e) { e.stopPropagation(); show(cur + 1); });
-  lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+  lb.addEventListener('click', function (e) { if (e.target === lb) close(false); });
   document.addEventListener('keydown', function (e) {
     if (!lb.classList.contains('on')) return;
-    if (e.key === 'Escape') close();
+    if (e.key === 'Escape') close(false);
     if (e.key === 'ArrowLeft') show(cur - 1);
     if (e.key === 'ArrowRight') show(cur + 1);
   });

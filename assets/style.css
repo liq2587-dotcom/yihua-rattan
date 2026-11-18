@@ -205,6 +205,8 @@ p{margin:0}
   .hdr.open .nav{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:rgba(248,244,236,.98);padding:6px var(--pad) 18px;border-bottom:1px solid var(--line)}
   .hdr.open .nav a{padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
   .lb .prev{left:8px}.lb .next{right:8px}
+  .lb .close{top:max(14px,env(safe-area-inset-top));right:14px;width:48px;height:48px;font-size:17px}
+  .lb .lb-cap{bottom:max(26px,calc(env(safe-area-inset-bottom) + 16px));font-size:12px}
   .contact-grid{grid-template-columns:1fr;padding-block:44px;gap:28px}
   .qr{justify-self:start}
   .fab{display:none}
