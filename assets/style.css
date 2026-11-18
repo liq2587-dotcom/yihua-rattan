@@ -189,6 +189,8 @@ p{margin:0}
 .lb .lb-cap{position:absolute;left:0;right:0;bottom:22px;text-align:center;color:#cdbca6;font-size:12.5px;letter-spacing:.08em;padding:0 60px}
 .lb button{position:absolute;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.22);color:#f4ead9;cursor:pointer;transition:.25s;border-radius:50%}
 .lb button:hover{background:rgba(255,255,255,.16)}
+/* 三个按钮误带了 .lb 类，会被 .lb{display:none} 藏掉，这里复位 */
+.lb .close,.lb .prev,.lb .next{display:block;position:absolute;inset:auto}
 .lb .close{top:20px;right:20px;width:42px;height:42px;font-size:15px}
 .lb .prev,.lb .next{top:50%;transform:translateY(-50%);width:46px;height:46px;font-size:16px}
 .lb .prev{left:18px}

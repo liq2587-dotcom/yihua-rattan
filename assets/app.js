@@ -94,7 +94,7 @@
     lb.style.backgroundRepeat = 'no-repeat';
     lbImg.src = card.getAttribute('data-full') || img.src;
     lbImg.alt = img.alt || '';
-    lbCap.textContent = (card.getAttribute('data-cap') || '') + '　·　点空白处或按返回键关闭';
+    lbCap.textContent = (card.getAttribute('data-cap') || '') + '　·　点空白或返回关闭';
     lb.classList.add('on');
     document.body.style.overflow = 'hidden';
     lb.setAttribute('aria-hidden', 'false');
