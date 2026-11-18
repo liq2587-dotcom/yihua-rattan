@@ -185,6 +185,9 @@ p{margin:0}
 /* ---------- lightbox ---------- */
 .lb{position:fixed;inset:0;z-index:120;display:none;background:rgba(10,7,4,.96);backdrop-filter:blur(4px)}
 .lb.on{display:flex;align-items:center;justify-content:center}
+/* 遮罩打开时锁死背景滚动（iOS 必需），并阻止滚动穿透与橡皮筋 */
+.lb{overscroll-behavior:contain;touch-action:none;-webkit-user-select:none;user-select:none}
+body.lb-lock{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .lb img{max-width:min(92vw,1200px);max-height:82vh;width:auto;object-fit:contain;box-shadow:0 30px 90px -30px #000}
 .lb .lb-cap{position:absolute;left:0;right:0;bottom:22px;text-align:center;color:#cdbca6;font-size:12.5px;letter-spacing:.08em;padding:0 60px}
 .lb button{position:absolute;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.22);color:#f4ead9;cursor:pointer;transition:.25s;border-radius:50%}

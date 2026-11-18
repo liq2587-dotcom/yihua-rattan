@@ -74,6 +74,19 @@
   var lbCap = document.getElementById('lbCap');
   var cur = -1, list = [];
   var lbPushed = false;   // 是否已压入历史记录
+  var lbScrollY = 0;      // 锁定前的滚动位置
+
+  // iOS Safari 不吃 body{overflow:hidden}，必须用 position:fixed 锁，并记住位置
+  function lockScroll() {
+    lbScrollY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.top = '-' + lbScrollY + 'px';
+    document.body.classList.add('lb-lock');
+  }
+  function unlockScroll() {
+    document.body.classList.remove('lb-lock');
+    document.body.style.top = '';
+    window.scrollTo(0, lbScrollY);
+  }
 
   function visible() {
     return cards.filter(function (c) { return c.style.display !== 'none'; });
@@ -97,6 +110,7 @@
     lbCap.textContent = (card.getAttribute('data-cap') || '') + '　·　点空白或返回关闭';
     lb.classList.add('on');
     document.body.style.overflow = 'hidden';
+    lockScroll();
     lb.setAttribute('aria-hidden', 'false');
   }
 
@@ -115,6 +129,7 @@
     lbImg.removeAttribute('src');
     lb.style.backgroundImage = '';
     lb.setAttribute('aria-hidden', 'true');
+    unlockScroll();
     if (lbPushed && !fromPop) {
       lbPushed = false;
       history.back();   // 主动关闭时把那条历史记录退掉，保持返回键行为正常
